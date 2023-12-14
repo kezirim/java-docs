@@ -2,6 +2,240 @@
 Java Documentations
 ## Data Structure and Algorithms
 
+### Strings
+
+Some commonly used String methods, their time complexities, and examples:
+
+#### Commonly Used String Methods in Java:
+
+1. **charAt(int index):**
+   - **Time Complexity:** O(1)
+   - **Example:**
+     ```java
+     String str = "Hello";
+     char ch = str.charAt(0); // Retrieves 'H'
+     ```
+
+2. **length():**
+   - **Time Complexity:** O(1)
+   - **Example:**
+     ```java
+     String str = "Hello";
+     int len = str.length(); // Returns 5
+     ```
+
+3. **substring(int beginIndex, int endIndex):**
+   - **Time Complexity:** O(n), where n is the length of the substring
+   - **Example:**
+     ```java
+     String str = "Hello World";
+     String substr = str.substring(6, 11); // Retrieves "World"
+     ```
+
+4. **indexOf(String str):**
+   - **Time Complexity:** O(n * m), where n is the length of the string and m is the length of the substring being searched
+   - **Example:**
+     ```java
+     String str = "Hello World";
+     int index = str.indexOf("World"); // Returns 6
+     ```
+
+5. **contains(CharSequence s):**
+   - **Time Complexity:** O(n * m), where n is the length of the string and m is the length of the substring being searched
+   - **Example:**
+     ```java
+     String str = "Hello World";
+     boolean contains = str.contains("World"); // Returns true
+     ```
+
+6. **startsWith(String prefix):**
+   - **Time Complexity:** O(m), where m is the length of the prefix being searched
+   - **Example:**
+     ```java
+     String str = "Hello World";
+     boolean startsWith = str.startsWith("Hello"); // Returns true
+     ```
+
+7. **endsWith(String suffix):**
+   - **Time Complexity:** O(m), where m is the length of the suffix being searched
+   - **Example:**
+     ```java
+     String str = "Hello World";
+     boolean endsWith = str.endsWith("World"); // Returns true
+     ```
+
+8. **replace(CharSequence target, CharSequence replacement):**
+   - **Time Complexity:** O(n * m), where n is the length of the string and m is the length of the replaced substring
+   - **Example:**
+     ```java
+     String str = "Hello World";
+     String replaced = str.replace("World", "Universe"); // Returns "Hello Universe"
+     ```
+In Java, regular expressions (regex) are powerful tools for pattern matching within strings. The `java.util.regex` package provides classes like `Pattern` and `Matcher` to work with regular expressions. Here are some methods that use regex for searching within strings:
+
+#### Commonly Used Methods for String Search with Regex:
+
+1. **Pattern.compile(String regex):**
+   - Compiles the given regular expression into a pattern.
+   - **Example:**
+     ```java
+     String regex = "fox";
+     Pattern pattern = Pattern.compile(regex);
+     ```
+
+2. **Matcher.matches():**
+   - Attempts to match the entire text against the pattern.
+   - **Example:**
+     ```java
+     String text = "The quick brown fox jumps over the lazy dog";
+     String regex = "brown.*jumps";
+     Pattern pattern = Pattern.compile(regex);
+     Matcher matcher = pattern.matcher(text);
+     boolean matches = matcher.matches(); // Returns true if the entire text matches the pattern
+     ```
+
+3. **Matcher.find():**
+   - Attempts to find the next subsequence of the input sequence that matches the pattern.
+   - **Example:**
+     ```java
+     String text = "The quick brown fox jumps over the lazy dog";
+     String regex = "fox";
+     Pattern pattern = Pattern.compile(regex);
+     Matcher matcher = pattern.matcher(text);
+     boolean found = matcher.find(); // Returns true if "fox" is found in the text
+     ```
+
+4. **Matcher.group():**
+   - Returns the input subsequence captured by the previous match.
+   - **Example:**
+     ```java
+     String text = "The quick brown fox jumps over the lazy dog";
+     String regex = "\\b\\w{5}\\b"; // Matches words with exactly 5 characters
+     Pattern pattern = Pattern.compile(regex);
+     Matcher matcher = pattern.matcher(text);
+     while (matcher.find()) {
+         String matched = matcher.group(); // Retrieves each matched word
+         System.out.println("Matched: " + matched);
+     }
+     ```
+
+5. **String.split(String regex):**
+   - Splits the string using the provided regular expression.
+   - **Example:**
+     ```java
+     String text = "The quick brown fox jumps over the lazy dog";
+     String regex = "\\s+"; // Splits by whitespace
+     String[] words = text.split(regex);
+     // Words array contains individual words: ["The", "quick", "brown", ...]
+     ```
+
+6. **String.replaceAll(String regex, String replacement):**
+   - Replaces substrings that match the given regular expression with the specified replacement string.
+   - **Example:**
+     ```java
+     String text = "The quick brown fox jumps over the lazy dog";
+     String replacedText = text.replaceAll("\\b(\\w{4})\\b", "****");
+     // Replaces 4-letter words with ****: "The quick brown **** jumps over the lazy ****"
+     ```
+
+Regular expressions in Java provide a flexible and powerful way to perform complex pattern matching and manipulation within strings. They can be used for tasks like validation, extraction, substitution, and more.
+
+Absolutely! This statement uses the `replaceAll()` method in Java to replace specific substrings in a string based on a regular expression pattern.
+
+Let's break down the statement in (6):
+
+```java
+String replacedText = text.replaceAll("\\b(\\w{4})\\b", "****");
+```
+
+- `text`: This is the original string where replacements will be made.
+- `replaceAll`: This is a method available in Java's `String` class used to replace all substrings that match a given regular expression pattern with a specified replacement string.
+- `"\\b(\\w{4})\\b"`: This is the regular expression pattern that describes the substring to be replaced. Let's break it down further:
+  - `\\b`: This represents a word boundary. It ensures that the pattern matches whole words, not parts of words.
+  - `(\\w{4})`: This is a capturing group `(...)` that matches exactly four word characters (`\w`). `\w` represents any word character (alphanumeric character plus underscore). `{4}` specifies the exact count, in this case, four characters.
+  - `\\b`: Another word boundary to ensure the word is complete.
+
+So, the overall pattern `\\b(\\w{4})\\b` looks for whole words that consist of exactly four alphanumeric characters and captures them.
+
+- `"****"`: This is the replacement string. It will replace any substring that matches the specified pattern with four asterisks (`****`).
+
+##### Example:
+Let's say you have the text: "The quick brown fox jumps over the lazy dog and a cat."
+
+Applying the `replaceAll()` with the given pattern and replacement:
+
+- `\\b(\\w{4})\\b` will match the words "quick", "brown", "jumps", "over", "lazy", and "and".
+- Each of these four-letter words will be replaced with "****".
+
+So, after executing the `replaceAll()` method with this pattern and replacement string, the `replacedText` will be: "The **** **** fox ***** **** the **** dog *** a ****."
+
+#### Needle in a haystack problem
+
+```java
+public class NeedleInHaystack {
+    public static int strStr(String haystack, String needle) {
+        int hayLen = haystack.length();
+        int needleLen = needle.length();
+
+        if (needleLen == 0) return 0; // Empty needle
+
+        for (int i = 0; i <= hayLen - needleLen; i++) {
+            int j;
+            for (j = 0; j < needleLen; j++) {
+                if (haystack.charAt(i + j) != needle.charAt(j)) {
+                    break;
+                }
+            }
+            if (j == needleLen) {
+                return i; // Found the needle
+            }
+        }
+        return -1; // Needle not found
+    }
+
+    public static void main(String[] args) {
+        String haystack = "Hello, this is a haystack";
+        String needle = "hay";
+
+        int index = strStr(haystack, needle);
+        if (index != -1) {
+            System.out.println("Needle found at index: " + index);
+        } else {
+            System.out.println("Needle not found in the haystack.");
+        }
+    }
+}
+
+```
+
+#### Predefined character class in Regular Expression
+
+In Java's regular expressions, there are several predefined character classes that can be used to match specific types of characters. Here's a list of these predefined character classes:
+
+1. `\d`: Matches any digit character (equivalent to `[0-9]`).
+2. `\D`: Matches any non-digit character (equivalent to `[^0-9]`).
+3. `\s`: Matches any whitespace character (spaces, tabs, line breaks).
+4. `\S`: Matches any non-whitespace character.
+5. `\w`: Matches any word character (alphanumeric characters plus underscore `[a-zA-Z0-9_]`).
+6. `\W`: Matches any non-word character.
+7. `\b`: Matches a word boundary (position between a word character and a non-word character).
+8. `\B`: Matches a non-word boundary.
+
+There are also predefined character classes that match certain classes of characters in Unicode:
+
+9. `\p{Lower}`: Matches any lowercase alphabetic character.
+10. `\p{Upper}`: Matches any uppercase alphabetic character.
+11. `\p{Alpha}`: Matches any alphabetic character.
+12. `\p{Digit}`: Matches any numeric digit.
+13. `\p{Alnum}`: Matches any alphanumeric character.
+14. `\p{Punct}`: Matches any punctuation character.
+15. `\p{Graph}`: Matches any visible character (characters that have graphical representation).
+16. `\p{Print}`: Matches any printable character (visible characters and spaces).
+17. `\p{Space}`: Matches any whitespace character.
+18. `\p{Cntrl}`: Matches any control character.
+
+These predefined character classes provide a convenient way to match specific types of characters without explicitly listing each character individually in a character set (`[]`). They are particularly useful when dealing with different types of textual data where you want to match certain categories of characters.
+
 ### Arrays
 
 The `Arrays` class provides utility methods for working with arrays. Here are some common methods along with their time complexities:
