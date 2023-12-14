@@ -1,6 +1,276 @@
 # java-docs
 Java Documentations
 ## Data Structure and Algorithms
+
+### Arrays
+
+The `Arrays` class provides utility methods for working with arrays. Here are some common methods along with their time complexities:
+
+1. **sort()**: Sorts the specified array into ascending numerical order.
+   - Time Complexity: O(n log n) - Uses a variant of quicksort or mergesort algorithms for primitive types, and `Timsort` for objects, which performs well on nearly sorted data.
+
+2. **binarySearch()**: Searches for a specific element in the sorted array using the binary search algorithm.
+   - Time Complexity: O(log n) - Finds the index of the element in logarithmic time.
+
+3. **copyOf()**: Copies the specified array, truncating or padding with zeros (if necessary) to obtain the specified length.
+   - Time Complexity: O(n) - Copies elements proportionate to the size of the array.
+
+4. **fill()**: Assigns the specified value to each element of the specified array.
+   - Time Complexity: O(n) - Sets each element to the specified value, proportionate to the size of the array.
+
+5. **toString()**: Returns a string representation of the contents of the specified array.
+   - Time Complexity: O(n) - Generates a string representation by iterating through the array.
+
+Here's an example demonstrating the usage of some of these methods:
+
+```java
+import java.util.Arrays;
+
+public class ArraysExample {
+    public static void main(String[] args) {
+        // Initializing an array
+        int[] numbers = {5, 2, 8, 1, 6};
+
+        // Sorting the array
+        Arrays.sort(numbers);
+        System.out.println("Sorted Array: " + Arrays.toString(numbers));
+
+        // Searching for an element in the sorted array
+        int index = Arrays.binarySearch(numbers, 6);
+        System.out.println("Index of 6: " + index);
+
+        // Copying a portion of the array
+        int[] copy = Arrays.copyOf(numbers, 3);
+        System.out.println("Copied Array: " + Arrays.toString(copy));
+
+        // Filling the array with a specific value
+        int[] filledArray = new int[5];
+        Arrays.fill(filledArray, 10);
+        System.out.println("Filled Array: " + Arrays.toString(filledArray));
+    }
+}
+```
+
+This code showcases the usage of various `Arrays` methods such as sorting, binary search, copying, and filling arrays. The output will display the sorted array, the index of a searched element, a copied portion of the array, and a filled array with a specific value. The time complexities provided are for typical scenarios; actual performance may vary based on the JVM implementation and input data.
+
+
+#### Method binarySearch
+Certainly! The `Arrays.binarySearch()` method in Java performs a binary search on a sorted array to find the index of a specified value. It uses the binary search algorithm, which is efficient for searching in sorted collections.
+
+##### Method Signature:
+
+```java
+public static int binarySearch(type[] a, type key)
+public static int binarySearch(type[] a, int fromIndex, int toIndex, type key)
+```
+
+##### Parameters:
+
+1. `a`: The array to be searched. It should be sorted in ascending order according to the natural ordering of its elements or by a custom comparator.
+
+2. `key`: The value to be searched for in the array.
+
+3. `fromIndex`: The index to start the search (inclusive).
+
+4. `toIndex`: The index to end the search (exclusive).
+
+##### Return Value:
+
+- If the key is found in the array, the method returns the index of the key.
+- If the key is not found, it returns a negative value (specifically, `-insertionPoint - 1`). The `insertionPoint` is the index at which the key would be inserted to maintain the sorted order of the array.
+
+##### Considerations:
+
+- The array must be sorted before using `binarySearch()`. If it's not sorted, the result is undefined.
+- For arrays containing objects, the objects should implement the `Comparable` interface or a custom comparator should be provided.
+- If the array contains duplicate values, the returned index can be any one of the matching elements. There's no guarantee which one will be returned.
+- If the key is not found, the return value provides information on where the key would be inserted to maintain the sorted order.
+
+##### Examples:
+
+```java
+int[] numbers = {1, 3, 5, 7, 9, 11};
+int index = Arrays.binarySearch(numbers, 7); // Searches for 7 in the entire array
+// index will be 3 (index of 7 in the array)
+```
+
+```java
+int[] numbers = {1, 3, 5, 7, 9, 11};
+int index = Arrays.binarySearch(numbers, 1, 4, 5); // Searches for 5 in the range [1, 4)
+// index will be 2
+```
+
+```java
+int[] numbers = {1, 3, 7, 9, 11};
+int index = Arrays.binarySearch(numbers, 1, 4, 5); // Searches for 5 in the range [1, 4)
+// index will be -3 (-(insertionPoint) - 1)
+// Insertion point is 3 as 5 should be inserted at index 3 to maintain the sorted order within [1, 4)
+```
+
+The `Arrays.binarySearch()` method is powerful for quickly finding elements in a sorted array but requires the array to be sorted for reliable results.
+
+##### Examples of binarySearch with object arrays
+
+```java
+import java.util.Arrays;
+import java.util.Comparator;
+
+class Person {
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+}
+
+public class BinarySearchObjectArrayExample {
+    public static void main(String[] args) {
+        Person[] people = {
+            new Person("Alice", 25),
+            new Person("Bob", 30),
+            new Person("Charlie", 20),
+            new Person("David", 35)
+        };
+
+        // Sorting the array based on the person's name using a Comparator
+        Arrays.sort(people, Comparator.comparing(Person::getName));
+
+        // Creating a sample person to search for
+        Person searchPerson = new Person("Charlie", 20);
+
+        // Performing binary search using a custom Comparator
+        int index = Arrays.binarySearch(people, searchPerson, Comparator.comparing(Person::getName));
+
+        if (index >= 0) {
+            System.out.println("Person found at index: " + index);
+        } else {
+            System.out.println("Person not found");
+        }
+    }
+}
+```
+
+
+```java
+import java.util.Arrays;
+
+class Person implements Comparable<Person> {
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    @Override
+    public int compareTo(Person otherPerson) {
+        // Compare persons based on their age
+        return Integer.compare(this.age, otherPerson.getAge());
+    }
+
+    @Override
+    public String toString() {
+        return name + " - " + age;
+    }
+}
+
+public class BinarySearchObjectArrayExample {
+    public static void main(String[] args) {
+        // Creating an array of Person objects (sorted by age)
+        Person[] persons = {
+                new Person("Alice", 25),
+                new Person("Bob", 30),
+                new Person("Charlie", 35),
+                new Person("David", 40)
+        };
+
+        // Sorting the array based on age (natural ordering defined in Person class)
+        Arrays.sort(persons);
+
+        // Searching for a person with age 35 in the array
+        Person searchKey = new Person("", 35);
+        int index = Arrays.binarySearch(persons, searchKey);
+
+        // Displaying the result of the search
+        if (index >= 0) {
+            System.out.println("Person found at index " + index + ": " + persons[index]);
+        } else {
+            System.out.println("Person not found. Insertion point would be at index " + (-index - 1));
+        }
+    }
+}
+```
+
+
+### ArrayList
+`ArrayList` is a dynamic array implementation that allows flexible manipulation of elements, offering fast insertion and retrieval of elements at specific positions. Here are some key methods along with their time complexities:
+
+1. **add(E e)**: Appends the specified element to the end of the list.
+   - Time Complexity: O(1) amortized (O(n) occasionally) - Appending an element at the end takes constant time on average, but occasionally it might need to resize the underlying array, which takes linear time.
+
+2. **add(int index, E element)**: Inserts the specified element at the specified position in the list.
+   - Time Complexity: O(n) - Inserting an element at a specific index requires shifting subsequent elements if the index is not at the end.
+
+3. **get(int index)**: Retrieves the element at the specified index in the list.
+   - Time Complexity: O(1) - Retrieving an element by index is constant time.
+
+4. **remove(int index)**: Removes the element at the specified position in the list.
+   - Time Complexity: O(n) - Removing an element at a specific index requires shifting subsequent elements.
+
+5. **size()**: Returns the number of elements in the list.
+   - Time Complexity: O(1) - Getting the size is constant time as the `ArrayList` keeps track of its size internally.
+
+Here's an example demonstrating the usage of `ArrayList`:
+
+```java
+import java.util.ArrayList;
+
+public class ArrayListExample {
+    public static void main(String[] args) {
+        // Creating an ArrayList
+        ArrayList<Integer> arrayList = new ArrayList<>();
+
+        // Adding elements to the list
+        arrayList.add(5);
+        arrayList.add(10);
+        arrayList.add(15);
+
+        // Printing the elements in the list
+        System.out.println("ArrayList elements: " + arrayList);
+
+        // Inserting an element at a specific index
+        arrayList.add(1, 8);
+
+        // Printing the updated elements in the list
+        System.out.println("Updated ArrayList elements: " + arrayList);
+
+        // Removing an element at a specific index
+        arrayList.remove(2);
+
+        // Printing the final elements in the list
+        System.out.println("Final ArrayList elements: " + arrayList);
+    }
+}
+```
+
+This code snippet showcases common operations such as adding elements, inserting an element at a specific index, and removing an element at a specific index from an `ArrayList`. `ArrayList` is suitable when frequent access and iteration are required but may not be the best choice for frequent insertions or deletions in the middle, as these operations can be relatively slow due to the shifting of elements.
+
+
 ### HashTable
 The `HashTable` class has various methods that allow you to manipulate key-value pairs in the hash table. Here are some of the essential methods:
 
